@@ -8,6 +8,7 @@
     "data": [
         'security/loan_application_groups.xml',
         'security/ir.model.access.csv',
+        'views/loan_application_views.xml',
      ],
     "demo": [],
     "author": "Odoo, Inc.",
