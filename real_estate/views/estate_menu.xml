@@ -1,6 +1,6 @@
 <odoo>
     <menuitem id="estate_root" name="Real Estate">
-        <menuitem id="estate_app_menu"  name="Estate">
+        <menuitem id="estate_app_menu" name="Estate">
             <menuitem id="estate_property_menu" name="Propiedades" action="estate_property_action"/>
         </menuitem>
     </menuitem>

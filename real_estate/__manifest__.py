@@ -4,10 +4,10 @@
     "version": "18.0.0.0.0",
     "category": "Technical Training/Real Estate",
     "license": "OPL-1",
-    "depends": ["base"], 
+    "depends": ["base"],
     "data": [
-       ## 'security/estate_groups.xml',
-       ## 'security/ir.model.access.csv',
+        "security/estate_groups.xml",
+        'security/ir.model.access.csv',
         'views/estate_menu.xml',
         'views/estate_property_view.xml',
     ],
