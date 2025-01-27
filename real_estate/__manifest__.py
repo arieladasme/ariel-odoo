@@ -6,6 +6,10 @@
     "license": "OPL-1",
     "depends": ["base"], 
     "data": [
+        'security/estate_groups.xml',
+        'security/ir.model.access.csv',
+        'views/estate_menu.xml',
+        'views/estate_property_view.xml',
     ],
     "demo": [
     ],
