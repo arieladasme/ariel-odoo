@@ -6,7 +6,7 @@
     "license": "OPL-1",
     "depends": ["base"],
     "data": [
-        'security/security_groups.xml',
+        'security/loan_application_groups.xml',
         'security/ir.model.access.csv',
      ],
     "demo": [],
