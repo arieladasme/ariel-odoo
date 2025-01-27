@@ -1,8 +1,8 @@
 {
     "name": "Solicitud de Préstamo",
-    "summary": "Gestionará toda la información relevante para una solicitud de préstamo.",
-    "version": "18.0.0.3.0",
-    "category": "Technical Training/Real Estate",
+    "summary": "Streamline the loan application process for dealerships working with third-party financing companies.",
+    "version": "18.0.0.0.2",
+    "category": "Kawiil/Custom Modules",
     "license": "OPL-1",
     "depends": ["base"],
     "data": [
@@ -11,7 +11,7 @@
         'views/loan_application_views.xml',
      ],
     "demo": [],
-    "author": "Odoo, Inc.",
-    "website": "www.odoo.com",
+    "author": "arieladasme",
+    "website": "github.com/arieladasme",
     "application": True,
 }
