@@ -7,7 +7,7 @@ class LoanAplication(models.Model):
 
     client = fields.Char(string="Cliente")
     seller = fields.Char(string="Vendedor")
-    sale_order = fields.Many2one("sale.order", string="Orden de Venta")
+    #sale_order = fields.Many2one("sale.order", string="Orden de Venta")
     state = fields.Selection([
         ('draft', 'Borrador'),
         ('submitted', 'Presentado'),

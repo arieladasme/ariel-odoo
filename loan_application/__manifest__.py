@@ -1,7 +1,7 @@
 {
     "name": "Solicitud de Préstamo",
     "summary": "Gestionará toda la información relevante para una solicitud de préstamo.",
-    "version": "18.0.0.0.0",
+    "version": "18.0.0.1.0",
     "category": "Technical Training/Real Estate",
     "license": "OPL-1",
     "depends": ["base"],
