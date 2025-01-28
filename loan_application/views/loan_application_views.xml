@@ -36,7 +36,7 @@
     </record>
 
     <record id="loan_application_list_view" model="ir.ui.view">
-        <field name="name">loan.application.list</field>
+        <field name="name">loan.application.list.view</field>
         <field name="model">loan.application</field>
         <field name="arch" type="xml">
             <list>
@@ -53,6 +53,21 @@
         <field name="name">Loan Applications</field>
         <field name="res_model">loan.application</field>
         <field name="view_mode">list,form</field>
+    </record>
+
+
+    <record id="loan_application_search_view" model="ir.ui.view">
+        <field name="name">loan.application.search.view</field>
+        <field name="model">loan.application</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="loan_amount"/>
+                <field name="interest_rate"/>
+                <field name="loan_term"/>
+                <field name="date_application"/>
+            </search>
+        </field>
     </record>
 
 </odoo>
