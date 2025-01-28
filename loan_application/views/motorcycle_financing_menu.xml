@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="menu_motorcycle_financing_root" name="Motorcycle Financing">
+        <menuitem id="menu_motorcycle_app_menu" name="Motorcycle Financing">
+            <menuitem id="menu_motorcycle_loan_application" name="Loan Application" />
+        </menuitem>
+    </menuitem>
+</odoo>
