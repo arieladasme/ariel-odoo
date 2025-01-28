@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="loan_application_signed_rule" model="ir.rule">
+            <field name="name">User: Do not modify signed loans</field>
+            <field name="model_id" ref="model_loan_application"/>
+            <field name="groups" eval="[(4, ref('loan_application.financing_user'))]"/>
+            <field name="domain_force">[('state', 'not in', ['signed'])]</field>
+            <field name="perm_read" eval="1"/>
+            <field name="perm_write" eval="1"/>
+            <field name="perm_create" eval="1"/>
+            <field name="perm_unlink" eval="1"/>
+        </record>
+    </data>
+</odoo>
