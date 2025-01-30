@@ -10,15 +10,15 @@
     </record>
 
     <!-- Grupos de Seguridad -->
-    <record id="financing_admin" model="res.groups">
-        <field name="name">Financing Admin</field>
-        <field name="category_id" ref="motorcycle_financing_category"/>
-        <field name="implied_ids" eval="[(4, ref('financing_user'))]"/>
-    </record>
-
     <record id="financing_user" model="res.groups">
         <field name="name">Financing User</field>
         <field name="category_id" ref="motorcycle_financing_category"/>
         <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="financing_admin" model="res.groups">
+        <field name="name">Financing Admin</field>
+        <field name="category_id" ref="motorcycle_financing_category"/>
+        <field name="implied_ids" eval="[(4, ref('financing_user'))]"/>
     </record>
 </odoo>
