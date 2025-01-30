@@ -4,10 +4,13 @@
         <field name="model">loan.application</field>
         <field name="arch" type="xml">
             <form>
+
                 <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
                     <group>
                         <group string="Loan Info">
-                            <field name="name"/>
                             <field name="state"/>
                             <field name="loan_amount"/>
                             <field name="currency_id"/>
@@ -66,6 +69,11 @@
                 <field name="interest_rate"/>
                 <field name="loan_term"/>
                 <field name="date_application"/>
+                <field name="state"/>
+                <filter name="draft_filter" string="New" domain="[('state', '=', 'draft')]"/>
+                <filter name="approved_filter" string="Offer Approved" domain="[('state', '=', 'approved')]"/>
+                <filter name="group_by_date" string="Appliction Date" context="{'group_by': 'date_application'}"/>
+                <filter name="group_by_state" string="State" context="{'group_by': 'state'}"/>
             </search>
         </field>
     </record>
