@@ -55,7 +55,7 @@ class LoanApplication(models.Model):
     # Campos relacionados
     document_ids = fields.One2many('loan.document', 'application_id', string='Documents')
     partner_id = fields.Many2one('res.partner', string='Customer')
-    sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=True)
+    sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=False)  # False temporal
     tag_ids = fields.Many2many('loan.tag', string='Tags')
     user_id = fields.Many2one('res.users', string='Salesperson')
 
