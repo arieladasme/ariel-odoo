@@ -5,6 +5,8 @@ from datetime import date
 class LoanDocument(models.Model):
     _name = 'loan.document'
     _description = 'Loan Document'
+    _order = "sequence, id"
+    
 
     name = fields.Char(string='Name', required=True)
     application_id = fields.Many2one('loan.application', string='Application')
@@ -15,6 +17,7 @@ class LoanDocument(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected')
     ], string='State', required=True, default='new')
+    sequence = fields.Integer(string='Sequence', default=10)
 
     @api.onchange('attachment')
     def _onchange_attachment(self):
@@ -33,6 +36,8 @@ class LoanDocument(models.Model):
 class LoanTag(models.Model):
     _name = 'loan.tag'
     _description = 'Loan Tag'
+    _order = "name"
+
 
     name = fields.Char(string='Name', required=True)
     color = fields.Integer(string='Color')
@@ -42,6 +47,8 @@ class LoanTag(models.Model):
 class LoanApplication(models.Model):
     _name = "loan.application"
     _description = "Loan Application"
+    _order = "date_application desc, id desc"
+
 
     name = fields.Char(string="Application Number", required=True)
     currency_id = fields.Many2one(comodel_name="res.currency", related='sale_order_id.currency_id',

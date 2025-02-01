@@ -5,9 +5,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_send" string="Send" type="object" />
-                    <button name="action_approve" string="Approve" type="object" />
-                    <button name="action_reject" string="Reject" type="object" />
+                    <button name="action_send" string="Send" type="object" class="oe_highlight" invisible="state in ('approved', 'rejected', 'signed', 'cancel')"/>
+                    <button name="action_approve" string="Approve" type="object" class="oe_highlight"/>
+                    <button name="action_reject" string="Reject" type="object" invisible="state == 'approved'"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,review,approved,rejected,signed"/>
                 </header>
                 <sheet>
@@ -16,12 +16,12 @@
                     </h1>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags..."/>
                     <group>
-                        <group string="Loan Info">
-                            <field name="sale_order_id"/>
-                            <field name="partner_id"/>
-                            <field name="user_id"/>
-                            <field name="document_count"/>
-                            <field name="document_count_approved"/>
+                        <group string="Loan Info" readonly="state not in ('draft')">
+                            <field name="sale_order_id" />
+                            <field name="partner_id" />
+                            <field name="user_id" />
+                            <field name="document_count" />
+                            <field name="document_count_approved" />
                         </group>
                         <group string="Customer Info">
                             <field name="sale_order_total"/>
@@ -36,11 +36,12 @@
                         <page string="Documentation">
                             <field name="document_ids">
                                 <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
                                     <field name="name"/>
                                     <field name="attachment" widget="binary" filename="name"/>
                                     <field name="type"/>
-                                    <button name="action_approve" type="object" icon="fa-check" attrs="{'invisible': [('state', '!=', 'new')]}"/>
-                                    <button name="action_reject" type="object" string="Reject" attrs="{'invisible': [('state', '!=', 'new')]}"/>
+                                    <button name="action_approve" type="object" icon="fa-check" invisible="state != 'new' or not attachment"/>
+                                    <button name="action_reject" type="object" string="Reject" invisible="state != 'new' or not attachment"/>
                                     <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-info="state == 'new'"/>
                                 </list>
                             </field>
