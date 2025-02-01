@@ -1,0 +1,24 @@
+<odoo>
+    <!-- Categorías de Módulo -->
+    <record id="motorcycle_dealership_category" model="ir.module.category">
+        <field name="name">Motorcycle Dealership</field>
+    </record>
+
+    <record id="motorcycle_financing_category" model="ir.module.category">
+        <field name="name">Motorcycle Financing</field>
+        <field name="parent_id" ref="motorcycle_dealership_category"/>
+    </record>
+
+    <!-- Grupos de Seguridad -->
+    <record id="financing_user" model="res.groups">
+        <field name="name">Financing User</field>
+        <field name="category_id" ref="motorcycle_financing_category"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="financing_admin" model="res.groups">
+        <field name="name">Financing Admin</field>
+        <field name="category_id" ref="motorcycle_financing_category"/>
+        <field name="implied_ids" eval="[(4, ref('financing_user'))]"/>
+    </record>
+</odoo>
