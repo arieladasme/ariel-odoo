@@ -1,5 +1,5 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import date
 
 class LoanDocument(models.Model):
@@ -36,6 +36,8 @@ class LoanTag(models.Model):
 
     name = fields.Char(string='Name', required=True)
     color = fields.Integer(string='Color')
+
+    _sql_constraints = [('unique_tag_name', 'UNIQUE(name)', 'Tag name must be unique!')]
 
 class LoanApplication(models.Model):
     _name = "loan.application"
@@ -107,6 +109,11 @@ class LoanApplication(models.Model):
         currency_field='currency_id'
     )
 
+    _sql_constraints = [
+        ('check_down_payment', 'CHECK(down_payment >= 0)', 'Down payment cannot be negative!'),
+        ('check_loan_amount', 'CHECK(loan_amount >= 0)', 'Loan amount cannot be negative!')
+    ]
+
     @api.depends('sale_order_total', 'down_payment')
     def _compute_loan_amount(self):
         for record in self:
@@ -147,4 +154,10 @@ class LoanApplication(models.Model):
     def action_reject(self):
         self.ensure_one()
         return self.write({'state': 'rejected', 'date_rejection': fields.Date.today()})
+
+    @api.constrains('down_payment', 'sale_order_total')
+    def _check_down_payment_limit(self):
+        for record in self:
+            if record.down_payment > record.sale_order_total:
+                raise ValidationError('Down payment cannot be greater than the sale order total amount!')
     
