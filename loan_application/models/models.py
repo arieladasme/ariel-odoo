@@ -165,6 +165,6 @@ class LoanApplication(models.Model):
     @api.constrains('down_payment', 'sale_order_total')
     def _check_down_payment_limit(self):
         for record in self:
-            if record.down_payment > record.sale_order_total:
+            if record.sale_order_id and record.down_payment > record.sale_order_total:
                 raise ValidationError('Down payment cannot be greater than the sale order total amount!')
     
