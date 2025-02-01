@@ -22,6 +22,14 @@ class LoanDocument(models.Model):
             if record.attachment:
                 record.state = 'new'
 
+    def action_approve(self):
+        for record in self:
+            record.write({'state': 'approved'})
+
+    def action_reject(self):
+        for record in self:
+            record.write({'state': 'rejected'})
+
 class LoanTag(models.Model):
     _name = 'loan.tag'
     _description = 'Loan Tag'

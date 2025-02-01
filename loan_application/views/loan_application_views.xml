@@ -39,6 +39,8 @@
                                     <field name="name"/>
                                     <field name="attachment" widget="binary" filename="name"/>
                                     <field name="type"/>
+                                    <button name="action_approve" type="object" icon="fa-check" attrs="{'invisible': [('state', '!=', 'new')]}"/>
+                                    <button name="action_reject" type="object" string="Reject" attrs="{'invisible': [('state', '!=', 'new')]}"/>
                                     <field name="state" widget="badge" decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-info="state == 'new'"/>
                                 </list>
                             </field>
