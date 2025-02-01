@@ -49,6 +49,10 @@ class LoanApplication(models.Model):
     _description = "Loan Application"
     _order = "date_application desc, id desc"
 
+    _sql_constraints = [
+        ('check_down_payment', 'CHECK(down_payment >= 0)', 'Down payment cannot be negative!'),
+        ('check_loan_amount', 'CHECK(loan_amount >= 0)', 'Loan amount cannot be negative!')
+    ]
 
     name = fields.Char(string="Application Number", required=True)
     currency_id = fields.Many2one(comodel_name="res.currency", related='sale_order_id.currency_id',
@@ -124,20 +128,48 @@ class LoanApplication(models.Model):
     @api.depends('sale_order_total', 'down_payment')
     def _compute_loan_amount(self):
         for record in self:
-            record.loan_amount = record.sale_order_total - record.down_payment
+            if record.sale_order_total:
+                safe_down_payment = min(record.down_payment or 0, record.sale_order_total)
+                record.loan_amount = max(0, record.sale_order_total - safe_down_payment)
+            else:
+                record.loan_amount = 0.0
 
     @api.depends('sale_order_total', 'loan_amount')
     def _compute_down_payment(self):
         for record in self:
-            record.down_payment = record.sale_order_total - record.loan_amount
+            if record.sale_order_total:
+                safe_loan_amount = min(record.loan_amount or 0, record.sale_order_total)
+                record.down_payment = max(0, record.sale_order_total - safe_loan_amount)
+            else:
+                record.down_payment = 0.0
 
     def _inverse_loan_amount(self):
         for record in self:
-            record.down_payment = record.sale_order_total - record.loan_amount
+            if record.sale_order_total:
+                safe_loan_amount = min(max(0, record.loan_amount or 0), record.sale_order_total)
+                record.down_payment = max(0, record.sale_order_total - safe_loan_amount)
+            else:
+                record.down_payment = 0.0
 
     def _inverse_down_payment(self):
         for record in self:
-            record.loan_amount = record.sale_order_total - record.down_payment
+            if record.sale_order_total:
+                safe_down_payment = min(max(0, record.down_payment or 0), record.sale_order_total)
+                record.loan_amount = max(0, record.sale_order_total - safe_down_payment)
+            else:
+                record.loan_amount = 0.0
+
+    @api.onchange('down_payment', 'sale_order_total')
+    def _onchange_down_payment(self):
+        if self.down_payment and self.sale_order_total:
+            if self.down_payment > self.sale_order_total:
+                self.down_payment = self.sale_order_total
+                return {
+                    'warning': {
+                        'title': 'Invalid Down Payment',
+                        'message': 'The down payment cannot exceed the total sale amount. Please enter a valid down payment amount.'
+                    }
+                }
 
     @api.depends('document_ids', 'document_ids.state')
     def _compute_document_count(self):
@@ -165,6 +197,9 @@ class LoanApplication(models.Model):
     @api.constrains('down_payment', 'sale_order_total')
     def _check_down_payment_limit(self):
         for record in self:
-            if record.sale_order_id and record.down_payment > record.sale_order_total:
-                raise ValidationError('Down payment cannot be greater than the sale order total amount!')
+            if record.down_payment and record.sale_order_total:
+                if record.down_payment > record.sale_order_total:
+                    raise ValidationError('The down payment amount cannot exceed the total sale amount. Please enter a smaller down payment.')
+                if record.down_payment < 0:
+                    raise ValidationError('The down payment amount must be positive.')
     
