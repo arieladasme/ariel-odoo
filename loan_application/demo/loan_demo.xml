@@ -12,7 +12,7 @@
     <record id="loan_02" model="loan.application">
         <field name="name">Antoine Bourdain - Indra 2024</field>
         <field name="interest_rate">9</field>
-        <field name="loan_amount">9000</field>
+        <field name="loan_amount">16700</field>
         <field name="loan_term">24</field>
         <field name="state">signed</field>
         <field name="down_payment">1300</field>

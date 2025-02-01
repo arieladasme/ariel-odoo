@@ -1,7 +1,7 @@
 {
     "name": "Solicitud de Préstamo",
     "summary": "Streamline the loan application process for dealerships working with third-party financing companies.",
-    "version": "18.0.0.5.4",
+    "version": "18.0.0.5.5",
     "category": "Kawiil/Custom Modules",
     "license": "OPL-1",
     "depends": ["base", "sale"],
@@ -13,7 +13,7 @@
         'views/motorcycle_financing_menu.xml',
      ],
     "demo": [
-        #'demo/loan_demo.xml',
+        'demo/loan_demo.xml',
     ],
     "author": "arieladasme",
     "website": "github.com/arieladasme",
