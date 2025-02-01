@@ -1,4 +1,6 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
+from datetime import date
 
 class LoanDocument(models.Model):
     _name = 'loan.document'
@@ -13,6 +15,12 @@ class LoanDocument(models.Model):
         ('approved', 'Approved'),
         ('rejected', 'Rejected')
     ], string='State', required=True, default='new')
+
+    @api.onchange('attachment')
+    def _onchange_attachment(self):
+        for record in self:
+            if record.attachment:
+                record.state = 'new'
 
 class LoanTag(models.Model):
     _name = 'loan.tag'
@@ -116,3 +124,19 @@ class LoanApplication(models.Model):
             record.document_count_approved = len(
                 record.document_ids.filtered(lambda d: d.state == 'approved')
             )
+
+    def action_send(self):
+        self.ensure_one()
+        if not all(doc.state == 'approved' for doc in self.document_ids):
+            raise UserError('All documents must be approved before sending.')
+        
+        return self.write({'state': 'sent', 'date_application': fields.Date.today()})
+
+    def action_approve(self):
+        self.ensure_one()
+        return self.write({'state': 'approved', 'date_approval': fields.Date.today()})
+
+    def action_reject(self):
+        self.ensure_one()
+        return self.write({'state': 'rejected', 'date_rejection': fields.Date.today()})
+    

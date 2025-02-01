@@ -5,6 +5,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_send" string="Send" type="object" />
+                    <button name="action_approve" string="Approve" type="object" />
+                    <button name="action_reject" string="Reject" type="object" />
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,review,approved,rejected,signed"/>
                 </header>
                 <sheet>
