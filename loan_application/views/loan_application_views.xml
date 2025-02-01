@@ -4,11 +4,14 @@
         <field name="model">loan.application</field>
         <field name="arch" type="xml">
             <form>
-
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,review,approved,rejected,signed"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags..."/>
                     <group>
                         <group string="Loan Info">
                             <field name="state"/>
