@@ -4,7 +4,7 @@
     "version": "18.0.0.5.3",
     "category": "Kawiil/Custom Modules",
     "license": "OPL-1",
-    "depends": ["base"],
+    "depends": ["base", "sale"],
     "data": [
         'security/motorcycle_financing_groups.xml',
         'security/rules.xml',

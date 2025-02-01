@@ -1,5 +1,25 @@
 from odoo import fields, models
 
+class LoanDocument(models.Model):
+    _name = 'loan.document'
+    _description = 'Loan Document'
+
+    name = fields.Char(string='Name', required=True)
+    application_id = fields.Many2one('loan.application', string='Application')
+    attachment = fields.Binary(string='File')
+    type = fields.Char(string='Type')
+    state = fields.Selection([
+        ('new', 'New'),
+        ('approved', 'Approved'),
+        ('rejected', 'Rejected')
+    ], string='State', required=True, default='new')
+
+class LoanTag(models.Model):
+    _name = 'loan.tag'
+    _description = 'Loan Tag'
+
+    name = fields.Char(string='Name', required=True)
+    color = fields.Integer(string='Color')
 
 class LoanApplication(models.Model):
     _name = "loan.application"
@@ -32,8 +52,11 @@ class LoanApplication(models.Model):
         default='draft'
     )
     notes = fields.Text(string="Notes")
+    # Campos relacionados
+    document_ids = fields.One2many('loan.document', 'application_id', string='Documents')
+    partner_id = fields.Many2one('res.partner', string='Customer')
+    sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=True)
+    tag_ids = fields.Many2many('loan.tag', string='Tags')
+    user_id = fields.Many2one('res.users', string='Salesperson')
 
-    # client = fields.Char(string="Client")
-    # seller = fields.Char(string="Seller")
-    # sale_order = fields.Many2one("sale.order", string="Orden de Venta")
-    # TODO: agregar campo etiqueta y documentos justificativos
+
