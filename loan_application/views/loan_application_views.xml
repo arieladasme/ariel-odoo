@@ -17,7 +17,7 @@
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags..."/>
                     <group>
                         <group string="Loan Info" readonly="state not in ('draft')">
-                            <field name="sale_order_id" />
+                            <field name="sale_order_id" readonly="state not in ('draft')"/>
                             <field name="partner_id" />
                             <field name="user_id" />
                             <field name="document_count" />
@@ -97,6 +97,60 @@
                 <filter name="group_by_state" string="State" context="{'group_by': 'state'}"/>
             </search>
         </field>
+    </record>
+
+    <!-- Vista de lista para Tags -->
+    <record id="action_loan_tags_view" model="ir.ui.view">
+        <field name="name">loan.tag.list</field>
+        <field name="model">loan.tag</field>
+        <field name="arch" type="xml">
+            <list string="Loan Tags">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para Tags -->
+    <record id="action_loan_tags" model="ir.actions.act_window">
+        <field name="name">Loan Tags</field>
+        <field name="res_model">loan.tag</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Vista de lista para Tags -->
+    <record id="loan_tag_list_view" model="ir.ui.view">
+        <field name="name">loan.tag.list</field>
+        <field name="model">loan.tag</field>
+        <field name="arch" type="xml">
+            <list string="Loan Tags">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para Tags -->
+    <record id="loan_tag_form_view" model="ir.ui.view">
+        <field name="name">loan.tag.form</field>
+        <field name="model">loan.tag</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de ventana para Tags -->
+    <record id="action_loan_tags" model="ir.actions.act_window">
+        <field name="name">Loan Tags</field>
+        <field name="res_model">loan.tag</field>
+        <field name="view_mode">list,form</field>
     </record>
 
 </odoo>
