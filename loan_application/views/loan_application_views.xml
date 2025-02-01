@@ -14,18 +14,19 @@
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Tags..."/>
                     <group>
                         <group string="Loan Info">
-                            <field name="state"/>
-                            <field name="loan_amount"/>
+                            <field name="sale_order_id"/>
+                            <field name="partner_id"/>
+                            <field name="user_id"/>
+                            <field name="document_count"/>
+                            <field name="document_count_approved"/>
+                        </group>
+                        <group string="Customer Info">
+                            <field name="sale_order_total"/>
+                            <field name="down_payment" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                            <field name="loan_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             <field name="currency_id"/>
                             <field name="interest_rate"/>
                             <field name="loan_term"/>
-                            <field name="down_payment"/>
-                        </group>
-                        <group string="Date Log">
-                            <field name="date_application"/>
-                            <field name="date_approval"/>
-                            <field name="date_rejection"/>
-                            <field name="date_signed"/>
                         </group>
                     </group>
                     <notebook>
@@ -58,6 +59,7 @@
             <list>
                 <field name="name" string="Name"/>
                 <field name="loan_amount"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="interest_rate"/>
                 <field name="loan_term"/>
                 <field name="date_application"/>

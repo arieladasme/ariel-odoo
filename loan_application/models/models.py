@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 class LoanDocument(models.Model):
     _name = 'loan.document'
@@ -26,7 +26,8 @@ class LoanApplication(models.Model):
     _description = "Loan Application"
 
     name = fields.Char(string="Application Number", required=True)
-    currency_id = fields.Many2one(comodel_name="res.currency", string="Currency")
+    currency_id = fields.Many2one(comodel_name="res.currency", related='sale_order_id.currency_id',
+    store=True,string="Currency")
 
     date_application = fields.Date(string="Application Date")
     date_approval = fields.Date(string="Approval Date")
@@ -35,7 +36,13 @@ class LoanApplication(models.Model):
 
     down_payment = fields.Monetary(string="Down Payment", required=True, currency_field="currency_id")
     interest_rate = fields.Float(string="Interest Rate (%)", required=True, digits=(5, 2))
-    loan_amount = fields.Monetary(string="Loan Amount", required=True, currency_field="currency_id")
+    loan_amount = fields.Monetary(
+        string="Loan Amount",
+        compute='_compute_loan_amount',
+        inverse='_inverse_loan_amount',
+        store=True,
+        currency_field="currency_id"
+    )
     loan_term = fields.Integer(string="Loan Term (months)", required=True, default=36)
     rejection_reason = fields.Text(string="Rejection Reason")
     state = fields.Selection(
@@ -52,11 +59,60 @@ class LoanApplication(models.Model):
         default='draft'
     )
     notes = fields.Text(string="Notes")
-    # Campos relacionados
     document_ids = fields.One2many('loan.document', 'application_id', string='Documents')
-    partner_id = fields.Many2one('res.partner', string='Customer')
+    partner_id = fields.Many2one(
+        'res.partner',
+        related='sale_order_id.partner_id',
+        store=True,
+        string='Customer'
+    )
     sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=False)  # False temporal
     tag_ids = fields.Many2many('loan.tag', string='Tags')
-    user_id = fields.Many2one('res.users', string='Salesperson')
+    user_id = fields.Many2one(
+        'res.users',
+        related='sale_order_id.user_id',
+        store=True,
+        string='Salesperson'
+    )
+    document_count = fields.Integer(
+        string="Required Documents",
+        compute='_compute_document_count',
+        store=True
+    )
+    document_count_approved = fields.Integer(
+        string="Approved Documents",
+        compute='_compute_document_count_approved',
+        store=True
+    )
+    sale_order_total = fields.Monetary(
+        string="Sale Order Total",
+        related='sale_order_id.amount_total',
+        store=True,
+        currency_field='currency_id'
+    )
 
+    @api.depends('sale_order_total', 'down_payment')
+    def _compute_loan_amount(self):
+        for record in self:
+            record.loan_amount = record.sale_order_total - record.down_payment
 
+    @api.depends('sale_order_total', 'loan_amount')
+    def _compute_down_payment(self):
+        for record in self:
+            record.down_payment = record.sale_order_total - record.loan_amount
+
+    def _inverse_loan_amount(self):
+        for record in self:
+            record.down_payment = record.sale_order_total - record.loan_amount
+
+    def _inverse_down_payment(self):
+        for record in self:
+            record.loan_amount = record.sale_order_total - record.down_payment
+
+    @api.depends('document_ids', 'document_ids.state')
+    def _compute_document_count(self):
+        for record in self:
+            record.document_count = len(record.document_ids)
+            record.document_count_approved = len(
+                record.document_ids.filtered(lambda d: d.state == 'approved')
+            )
