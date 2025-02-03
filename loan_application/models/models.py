@@ -202,4 +202,16 @@ class LoanApplication(models.Model):
                     raise ValidationError('The down payment amount cannot exceed the total sale amount. Please enter a smaller down payment.')
                 if record.down_payment < 0:
                     raise ValidationError('The down payment amount must be positive.')
+
+    @api.depends('partner_id.name', 'sale_order_id.order_line.product_id.name')
+    def _compute_display_name(self):
+        super(LoanApplication, self)._compute_display_name()
+        for property in self:
+            partner_name = property.partner_id.name or "No customer"
+            if property.sale_order_id and property.sale_order_id.order_line:
+                product_names = property.sale_order_id.order_line.mapped('product_id.name')
+                products_str = ', '.join(product_names)
+            else:
+                products_str = "No product"
+            property.display_name = f"{partner_name} - {products_str}"
     
