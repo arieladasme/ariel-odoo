@@ -214,4 +214,26 @@ class LoanApplication(models.Model):
             else:
                 products_str = "No product"
             property.display_name = f"{partner_name} - {products_str}"
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        loans = super(LoanApplication, self).create(vals_list)
+
+        # Obtengo documentos activos
+        document_types = self.env['loan.application.document.type'].search([('active', '=', True)])
+
+        # Creo documentos asociados para cada aplicación
+        for loan in loans:
+            documents = []
+            for doc_type in document_types:
+                documents.append({
+                    'name': doc_type.name,
+                    'application_id': loan.id,
+                    'type': doc_type.name,
+                    'state': 'new',
+                })
+            if documents:
+                self.env['loan.document'].create(documents)
+
+        return loans
     

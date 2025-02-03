@@ -99,7 +99,7 @@
         </field>
     </record>
 
-    <!-- Vista de lista para Tags -->
+    <!-- TAG -->
     <record id="action_loan_tags_view" model="ir.ui.view">
         <field name="name">loan.tag.list</field>
         <field name="model">loan.tag</field>
@@ -111,26 +111,12 @@
         </field>
     </record>
 
-    <!-- Acción de ventana para Tags -->
     <record id="action_loan_tags" model="ir.actions.act_window">
         <field name="name">Loan Tags</field>
         <field name="res_model">loan.tag</field>
         <field name="view_mode">list</field>
     </record>
 
-    <!-- Vista de lista para Tags -->
-    <record id="loan_tag_list_view" model="ir.ui.view">
-        <field name="name">loan.tag.list</field>
-        <field name="model">loan.tag</field>
-        <field name="arch" type="xml">
-            <list string="Loan Tags">
-                <field name="name"/>
-                <field name="color" widget="color_picker"/>
-            </list>
-        </field>
-    </record>
-
-    <!-- Vista de formulario para Tags -->
     <record id="loan_tag_form_view" model="ir.ui.view">
         <field name="name">loan.tag.form</field>
         <field name="model">loan.tag</field>
@@ -146,11 +132,37 @@
         </field>
     </record>
 
-    <!-- Acción de ventana para Tags -->
-    <record id="action_loan_tags" model="ir.actions.act_window">
-        <field name="name">Loan Tags</field>
-        <field name="res_model">loan.tag</field>
-        <field name="view_mode">list,form</field>
+    <!-- DOCUMEN TYPE -->
+    <record id="action_loan_document_type" model="ir.actions.act_window">
+        <field name="name">Document Types</field>
+        <field name="res_model">loan.application.document.type</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="loan_application_document_type_list_view" model="ir.ui.view">
+        <field name="name">lloan.application.document.type.list</field>
+        <field name="model">loan.application.document.type</field>
+        <field name="arch" type="xml">
+            <list string="Document Types">
+                <field name="name"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="loan_application_document_type_form_view" model="ir.ui.view">
+        <field name="name">loan.application.document.type.form</field>
+        <field name="model">loan.application.document.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
     </record>
 
 </odoo>
