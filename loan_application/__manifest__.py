@@ -11,6 +11,8 @@
         'security/ir.model.access.csv',
         'views/loan_application_views.xml',
         'views/motorcycle_financing_menu.xml',
+        'views/sale_order_views.xml',
+        'data/product_category_data.xml',
      ],
     "demo": [
         'demo/loan_demo.xml',
