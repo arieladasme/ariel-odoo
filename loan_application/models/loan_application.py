@@ -1,6 +1,5 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
-from datetime import date
 
 
 class LoanApplication(models.Model):
@@ -24,13 +23,8 @@ class LoanApplication(models.Model):
 
     down_payment = fields.Monetary(string="Down Payment", required=True, currency_field="currency_id")
     interest_rate = fields.Float(string="Interest Rate (%)", required=True, digits=(5, 2))
-    loan_amount = fields.Monetary(
-        string="Loan Amount",
-        compute='_compute_loan_amount',
-        inverse='_inverse_loan_amount',
-        store=True,
-        currency_field="currency_id"
-    )
+    loan_amount = fields.Monetary(string="Loan Amount", compute='_compute_loan_amount', inverse='_inverse_loan_amount', 
+                store=True, currency_field="currency_id")
     loan_term = fields.Integer(string="Loan Term (months)", required=True, default=36)
     rejection_reason = fields.Text(string="Rejection Reason")
     state = fields.Selection(
@@ -48,36 +42,13 @@ class LoanApplication(models.Model):
     )
     notes = fields.Text(string="Notes")
     document_ids = fields.One2many('loan.document', 'application_id', string='Documents')
-    partner_id = fields.Many2one(
-        'res.partner',
-        related='sale_order_id.partner_id',
-        store=True,
-        string='Customer'
-    )
-    sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=False)  # False temporal
+    partner_id = fields.Many2one('res.partner', related='sale_order_id.partner_id', store=True, string='Customer')
     tag_ids = fields.Many2many('loan.tag', string='Tags')
-    user_id = fields.Many2one(
-        'res.users',
-        related='sale_order_id.user_id',
-        store=True,
-        string='Salesperson'
-    )
-    document_count = fields.Integer(
-        string="Required Documents",
-        compute='_compute_document_count',
-        store=True
-    )
-    document_count_approved = fields.Integer(
-        string="Approved Documents",
-        compute='_compute_document_count_approved',
-        store=True
-    )
-    sale_order_total = fields.Monetary(
-        string="Sale Order Total",
-        related='sale_order_id.amount_total',
-        store=True,
-        currency_field='currency_id'
-    )
+    user_id = fields.Many2one('res.users', related='sale_order_id.user_id', store=True, string='Salesperson')
+    document_count = fields.Integer(string="Required Documents", compute='_compute_document_count', store=True)
+    document_count_approved = fields.Integer(string="Approved Documents", compute='_compute_document_count_approved', store=True)
+    sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=True)
+    sale_order_total = fields.Monetary(string="Sale Order Total", related='sale_order_id.amount_total', store=True, currency_field='currency_id')
 
     _sql_constraints = [
         ('check_down_payment', 'CHECK(down_payment >= 0)', 'Down payment cannot be negative!'),
