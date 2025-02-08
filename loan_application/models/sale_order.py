@@ -11,21 +11,11 @@ class SaleOrder(models.Model):
     def action_apply_loan(self):
         self.ensure_one()
 
-        motorcycle_product = self._get_motorcycle_product()
-
         if self.loan_application_ids:
             raise ValidationError(_('A loan application already exists for this sale order.'))
 
-        ctx = {
-            'default_sale_order_id': self.id,
-            'default_product_id': motorcycle_product.product_id.id,
-            'default_partner_id': self.partner_id.id,
-            'default_sale_order_total': self.amount_total,
-            'default_currency_id': self.currency_id.id,
-            'default_user_id': self.user_id.id,
-            'default_name': f'{self.partner_id.name} {motorcycle_product.product_id.name}',
-            'default_state': 'draft'
-        }
+        motorcycle_product = self._get_motorcycle_product()
+        context = self._prepare_loan_application_context(motorcycle_product)
 
         self.write({'state': 'loan_applied'})
 
@@ -35,7 +25,20 @@ class SaleOrder(models.Model):
             'res_model': 'loan.application',
             'view_mode': 'form',
             'target': 'current',
-            'context': ctx
+            'context': context
+        }
+
+    def _prepare_loan_application_context(self, motorcycle_product):
+        self.ensure_one()
+        return {
+            'default_sale_order_id': self.id,
+            'default_product_id': motorcycle_product.product_id.id,
+            'default_partner_id': self.partner_id.id,
+            'default_sale_order_total': self.amount_total,
+            'default_currency_id': self.currency_id.id,
+            'default_user_id': self.user_id.id,
+            'default_name': f'{self.partner_id.name} {motorcycle_product.product_id.name}',
+            'default_state': 'draft'
         }
 
     def _get_motorcycle_product(self):
