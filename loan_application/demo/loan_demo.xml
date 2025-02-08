@@ -7,7 +7,7 @@
         <field name="state">draft</field>
         <field name="down_payment">3000</field>
         <field name="sale_order_total">18000</field>
-        <field name="sale_order_id" ref="sale_order_2"/>
+        <field name="sale_order_id">2</field>
         <field name="date_application" eval="(datetime.now() - relativedelta(months=5)).strftime('%Y-%m-%d')"/>
     </record>
     <record id="loan_02" model="loan.application">
@@ -18,7 +18,7 @@
         <field name="state">signed</field>
         <field name="down_payment">1300</field>
         <field name="sale_order_total">18000</field>
-        <field name="sale_order_id" ref="sale_order_7"/>
+        <field name="sale_order_id">7</field>
         <field name="date_application" eval="(datetime.now() - relativedelta(months=5)).strftime('%Y-%m-%d')"/>
     </record>
     <record id="loan_03" model="loan.application">
@@ -29,7 +29,7 @@
         <field name="state">approved</field>
         <field name="down_payment">5000</field>
         <field name="sale_order_total">18000</field>
-        <field name="sale_order_id" ref="sale_order_3"/>
+        <field name="sale_order_id">3</field>
         <field name="date_application" eval="(datetime.now() - relativedelta(months=5)).strftime('%Y-%m-%d')"/>
     </record>
 </odoo>
