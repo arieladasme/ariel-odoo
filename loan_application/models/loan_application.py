@@ -47,7 +47,7 @@ class LoanApplication(models.Model):
     user_id = fields.Many2one('res.users', related='sale_order_id.user_id', store=True, string='Salesperson')
     document_count = fields.Integer(string="Required Documents", compute='_compute_document_count', store=True)
     document_count_approved = fields.Integer(string="Approved Documents", compute='_compute_document_count_approved', store=True)
-    sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=True)
+    sale_order_id = fields.Many2one('sale.order', string='Sale Order', required=False)
     sale_order_total = fields.Monetary(string="Sale Order Total", related='sale_order_id.amount_total', store=True, currency_field='currency_id')
 
     _sql_constraints = [
