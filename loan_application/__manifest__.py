@@ -13,6 +13,7 @@
         'views/motorcycle_financing_menu.xml',
         'views/sale_order_views.xml',
         'data/product_category_data.xml',
+        'data/product_data.xml',
      ],
     "demo": [
         'demo/loan_demo.xml',
