@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class LoanApplication(models.Model):
     _name = "loan.application"
     _description = "Loan Application"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = "date_application desc, id desc"
 
     _sql_constraints = [
@@ -38,7 +39,8 @@ class LoanApplication(models.Model):
             ('cancel', 'Canceled')
         ],
         string='Status',
-        default='draft'
+        default='draft',
+        tracking=True
     )
     notes = fields.Text(string="Notes")
     document_ids = fields.One2many('loan.document', 'application_id', string='Documents')
