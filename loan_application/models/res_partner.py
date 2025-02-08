@@ -3,6 +3,7 @@ from odoo import models, fields, api
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+
     application_ids = fields.One2many('loan.application', 'partner_id', string="Loan Applications")
     application_count = fields.Integer(string="Loan Applications Count", compute="_compute_application_count")
 
@@ -13,11 +14,16 @@ class ResPartner(models.Model):
 
     def action_view_applications(self):
         self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Loan Applications',
-            'res_model': 'loan.application',
-            'view_mode': 'tree,form',
+        action = self.env.ref('loan_application.action_loan_application').read()[0]
+        action.update({
             'domain': [('partner_id', '=', self.id)],
-            'context': {'default_partner_id': self.id},
-        }
+            'context': {
+                'default_partner_id': self.id,
+                'search_default_partner_id': self.id
+            },
+            'views': [
+                (self.env.ref('loan_application.loan_application_list_view').id, 'list'),
+                (self.env.ref('loan_application.loan_application_form_view').id, 'form')
+            ]
+        })
+        return action

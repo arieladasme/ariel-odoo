@@ -12,6 +12,7 @@
         'views/loan_application_views.xml',
         'views/motorcycle_financing_menu.xml',
         'views/sale_order_views.xml',
+        'views/res_partner_views.xml',
         'data/product_category_data.xml',
         'data/product_data.xml',
      ],
