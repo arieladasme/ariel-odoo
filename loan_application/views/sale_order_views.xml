@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <!-- Button in header -->
             <button name="action_confirm" position="before">
-                <button name="action_create_loan_application" string="Apply Loan" type="object" class="btn-primary" invisible="state not in ('draft', 'sent')"/>
+                <button name="action_apply_loan" string="Apply Loan" type="object" class="btn-primary" invisible="state not in ('draft', 'sent')"/>
             </button>
 
             <!-- Loan applications section -->
